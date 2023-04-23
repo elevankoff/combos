@@ -1080,6 +1080,7 @@ int validator(int argc, char *argv[])
 		// Delay result
 		if(MSG_get_clock()-workunit->times[reply->result_number] >= database->delay_bound){
 			reply->status = FAIL;
+			printf("Failed because of timeout");
 			workunit->nerror_results++;
 			database->ndelay_results++;
 		}
