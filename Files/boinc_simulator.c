@@ -1272,8 +1272,8 @@ result_t select_result(int project_number, request_t req){
 
 	// Calculate number of tasks
 	result->number_tasks = (int32_t) floor(req->percentage/((double)database->job_duration/req->power));
-	printf("Percentate: %f ; Job duration: %lld ; Req power: %lld \n", req->percentage, database->job_duration, req->power);
-	printf("Group power: %lld \n", req->group_power);
+	//printf("Percentate: %f ; Job duration: %lld ; Req power: %lld \n", req->percentage, database->job_duration, req->power);
+	//printf("Group power: %lld \n", req->group_power);
 	if (result->number_tasks == 0) result->number_tasks = 1;
 		
 	// Create tasks
@@ -1286,7 +1286,6 @@ result_t select_result(int project_number, request_t req){
 		task->name = bprintf("%" PRId32, result->workunit->nsent_results++);
  		task->duration = database->job_duration*((double)req->group_power/req->power);
 		task->deadline = database->delay_bound;
-		printf("Task deadline: %lld", task->deadline);
 		task->start = MSG_get_clock();
 		task->heap_index = -1;
 		result->tasks[i] = task;
