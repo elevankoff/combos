@@ -1274,7 +1274,7 @@ result_t select_result(int project_number, request_t req){
 	result->number_tasks = (int32_t) floor(req->percentage/((double)database->job_duration/req->power));
 	printf("Percentate: %f ; Job duration: %lld ; Req power: %lld \n", req->percentage, database->job_duration, req->power);
 	printf("Group power: %lld \n", req->group_power);
-	if (result->number_tasks == 0) return blank_result();
+	if (result->number_tasks == 0) result->number_tasks = 1;
 		
 	// Create tasks
 	result->tasks = xbt_new0(task_t, (int) result->number_tasks);
