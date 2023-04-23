@@ -1272,7 +1272,7 @@ result_t select_result(int project_number, request_t req){
 
 	// Calculate number of tasks
 	result->number_tasks = (int32_t) floor(req->percentage/((double)database->job_duration/req->power));
-	if (result->number_tasks == 0) result->number_tasks = (int32_t) 1;
+	if (result->number_tasks == 0) return blank_result();
 		
 	// Create tasks
 	result->tasks = xbt_new0(task_t, (int) result->number_tasks);
