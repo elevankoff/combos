@@ -2732,6 +2732,7 @@ static int client_work_fetch(int argc, char *argv[])
 			double max_weight = greatest_weight->weight;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 				cur_weight->weight /= max_weight;
+				printf("Cur weight for %u = %f", dynar_cursor, cur_weight->weight);
 			}
 			printf("Greatest weight = %f\n", max_weight);
 			// TODO: fix to WRR
