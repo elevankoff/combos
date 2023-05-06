@@ -2726,13 +2726,13 @@ static int client_work_fetch(int argc, char *argv[])
 					success_percentage = 0.1;
 				}
 				cur_weight->weight = (proj->long_debt + proj->shortfall) / control * success_percentage;
+				printf("Cur weight for %u = %f\n", dynar_cursor, cur_weight->weight);
 			}
 			xbt_dynar_sort(proj_weights, weights_cmpfunc);
 			struct proj_weight *greatest_weight = *(struct proj_weight**)xbt_dynar_get_ptr(proj_weights, 0);
 			double max_weight = greatest_weight->weight;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 				cur_weight->weight /= max_weight;
-				printf("Cur weight for %u = %f", dynar_cursor, cur_weight->weight);
 			}
 			printf("Greatest weight = %f\n", max_weight);
 			// TODO: fix to WRR
