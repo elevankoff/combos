@@ -2702,7 +2702,7 @@ static int client_work_fetch(int argc, char *argv[])
 				continue;
 			/* FIXME: CONFLIT: the article says (long_debt - shortfall) and the wiki(http://boinc.berkeley.edu/trac/wiki/ClientSched) says (long_debt + shortfall). I will use here the wiki definition because it seems have the same behavior of web client simulator.*/
 
-			printf("Dept to project: %f, shortfall for project: %f\n", proj->long_debt, proj->shortfall);
+			//printf("Dept to project: %f, shortfall for project: %f\n", proj->long_debt, proj->shortfall);
 ///////******************************///////
 
 			if ((selected_proj == NULL) 
@@ -2728,12 +2728,14 @@ static int client_work_fetch(int argc, char *argv[])
 				cur_weight.weight = (proj->long_debt + proj->shortfall) / control * success_percentage;
 			}
 			xbt_dynar_sort(proj_weights, weights_cmpfunc);
-			double max_weight = ((struct proj_weight*)xbt_dynar_get_ptr(proj_weights, 0))->weight;
+			struct proj_weight *greatest_weight = (struct proj_weight*)xbt_dynar_get_ptr(proj_weights, 0);
+			double max_weight = greatest_weight->weight;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 				cur_weight.weight /= max_weight;
 			}
+			printf("Greatest weight = %f", max_weight);
 			// TODO: fix to WRR
-			selected_proj = ((struct proj_weight*)xbt_dynar_get_ptr(proj_weights, 0))->proj;
+			selected_proj = greatest_weight->proj;
 			
 
 			//printf("Selected project(%s) shortfall %lf %d\n", selected_proj->name, selected_proj->shortfall, selected_proj->shortfall > 0);
