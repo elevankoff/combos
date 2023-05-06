@@ -2637,8 +2637,8 @@ struct proj_weight {
 };
 
 int weights_cmpfunc (const void * a, const void * b) {
-  struct proj_weight *A = (struct proj_weight*)a;
-  struct proj_weight *B = (struct proj_weight*)b;
+  struct proj_weight *A = *(struct proj_weight**)a;
+  struct proj_weight *B = *(struct proj_weight**)b;
   return B->weight - A->weight;
 }
 
@@ -2685,7 +2685,7 @@ static int client_work_fetch(int argc, char *argv[])
 
 		client_update_shortfall(client);
 
-		xbt_dynar_t proj_weights = xbt_dynar_new(sizeof(struct proj_weight), NULL);
+		xbt_dynar_t proj_weights = xbt_dynar_new(sizeof(struct proj_weight*), NULL);
 		
 		selected_proj = NULL;
 		xbt_dict_foreach(projects, cursor, key, proj) {
@@ -2711,29 +2711,29 @@ static int client_work_fetch(int argc, char *argv[])
 				control = proj->long_debt + proj->shortfall;
 				selected_proj = proj;
 			}
-			struct proj_weight weight;
-			weight.proj = proj;
+			struct proj_weight* weight = malloc(sizeof(struct proj_weight));
+			weight->proj = proj;
 			xbt_dynar_push(proj_weights, &weight);
 		}
 
 		if (selected_proj) {
 			unsigned int dynar_cursor;
-			struct proj_weight cur_weight;
+			struct proj_weight* cur_weight;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 				pdatabase_t database = &_pdatabase[(int)proj->number];
 				double success_percentage = database->success_percentage;
 				if (success_percentage == 0) {
 					success_percentage = 0.1;
 				}
-				cur_weight.weight = (proj->long_debt + proj->shortfall) / control * success_percentage;
+				cur_weight->weight = (proj->long_debt + proj->shortfall) / control * success_percentage;
 			}
 			xbt_dynar_sort(proj_weights, weights_cmpfunc);
-			struct proj_weight *greatest_weight = (struct proj_weight*)xbt_dynar_get_ptr(proj_weights, 0);
+			struct proj_weight *greatest_weight = *(struct proj_weight**)xbt_dynar_get_ptr(proj_weights, 0);
 			double max_weight = greatest_weight->weight;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
-				cur_weight.weight /= max_weight;
+				cur_weight->weight /= max_weight;
 			}
-			printf("Greatest weight = %f", max_weight);
+			printf("Greatest weight = %f\n", max_weight);
 			// TODO: fix to WRR
 			selected_proj = greatest_weight->proj;
 			
