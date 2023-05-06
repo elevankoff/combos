@@ -2631,6 +2631,17 @@ static void client_update_shortfall(client_t client)
 
 }
 
+struct proj_weight {
+	double weight;
+	project_t proj;
+};
+
+int weights_cmpfunc (const void * a, const void * b) {
+  struct proj_weight *A = (struct proj_weight*)a;
+  struct proj_weight *B = (struct proj_weight*)b;
+  return B->weight - A->weight;
+}
+
 
 /*
 	Client work fetch
@@ -2673,6 +2684,8 @@ static int client_work_fetch(int argc, char *argv[])
 		xbt_mutex_release(client->ask_for_work_mutex);
 
 		client_update_shortfall(client);
+
+		xbt_dynar_t proj_weights = xbt_dynar_new(sizeof(struct proj_weight), NULL);
 		
 		selected_proj = NULL;
 		xbt_dict_foreach(projects, cursor, key, proj) {
@@ -2698,9 +2711,31 @@ static int client_work_fetch(int argc, char *argv[])
 				control = proj->long_debt + proj->shortfall;
 				selected_proj = proj;
 			}
+			struct proj_weight weight;
+			weight.proj = proj;
+			xbt_dynar_push(proj_weights, &weight);
 		}
 
 		if (selected_proj) {
+			unsigned int dynar_cursor;
+			struct proj_weight cur_weight;
+			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
+				pdatabase_t database = &_pdatabase[(int)proj->number];
+				double success_percentage = database->success_percentage;
+				if (success_percentage == 0) {
+					success_percentage = 0.1;
+				}
+				cur_weight.weight = (proj->long_debt + proj->shortfall) / control * success_percentage;
+			}
+			xbt_dynar_sort(proj_weights, weights_cmpfunc);
+			double max_weight = ((struct proj_weight*)xbt_dynar_get_ptr(proj_weights, 0))->weight;
+			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
+				cur_weight.weight /= max_weight;
+			}
+			// TODO: fix to WRR
+			selected_proj = ((struct proj_weight*)xbt_dynar_get_ptr(proj_weights, 0))->proj;
+			
+
 			//printf("Selected project(%s) shortfall %lf %d\n", selected_proj->name, selected_proj->shortfall, selected_proj->shortfall > 0);
 			/* prrs = sum_priority, all projects are potentially runnable */
 			work_percentage = selected_proj->shortfall > client->total_shortfall/client->sum_priority ? selected_proj->shortfall : client->total_shortfall/client->sum_priority;
