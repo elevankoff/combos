@@ -1080,7 +1080,6 @@ int validator(int argc, char *argv[])
 		// Delay result
 		if(MSG_get_clock()-workunit->times[reply->result_number] >= database->delay_bound){
 			reply->status = FAIL;
-			printf("Failed because of timeout");
 			workunit->nerror_results++;
 			database->ndelay_results++;
 		}
@@ -2690,13 +2689,12 @@ static int client_work_fetch(int argc, char *argv[])
 				continue;
 			/* FIXME: CONFLIT: the article says (long_debt - shortfall) and the wiki(http://boinc.berkeley.edu/trac/wiki/ClientSched) says (long_debt + shortfall). I will use here the wiki definition because it seems have the same behavior of web client simulator.*/
 
+			printf("Dept to project: %f, shortfall for project: %f\n", proj->long_debt, proj->shortfall);
 ///////******************************///////
 
-			if ((selected_proj == NULL) || (control < (proj->long_debt + proj->shortfall)) ) {
-				control = proj->long_debt + proj->shortfall;
-				selected_proj = proj;
-			}
-			if (fabs(control - proj->long_debt - proj->shortfall) < PRECISION) {
+			if ((selected_proj == NULL) 
+				|| (control - (proj->long_debt + proj->shortfall) < PRECISION))
+			{
 				control = proj->long_debt + proj->shortfall;
 				selected_proj = proj;
 			}
