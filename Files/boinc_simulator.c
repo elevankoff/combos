@@ -2734,7 +2734,7 @@ static int client_work_fetch(int argc, char *argv[])
 					success_percentage = 0.1;
 				}
 				if (control_min < 0) {
-					cur_weight->weight = (proj->long_debt + proj->shortfall - control_min) / (control_max - control_min) * success_percentage;
+					cur_weight->weight = (proj->long_debt + proj->shortfall - control_min*2) / (control_max - control_min*2) * success_percentage;
 				} else {
 					cur_weight->weight = (proj->long_debt + proj->shortfall) / control_max * success_percentage;
 				}
