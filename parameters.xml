@@ -51,7 +51,7 @@
 		<max_success_results>3</max_success_results>	<!-- Max number of success results -->
 		<delay_bound>1000000000</delay_bound>		<!-- Task deadline -->	
 		<success_percentage>50</success_percentage>	<!-- Percentage of success results -->
-		<canonical_percentage>50</canonical_percentage> <!-- Percentage of success results that make up a consensus -->
+		<canonical_percentage>95</canonical_percentage> <!-- Percentage of success results that make up a consensus -->
 		<output_file_storage>0</output_file_storage>	<!-- Output file storage [0 -> data servers, 1 -> data clients] -->
 		<dsreplication>1</dsreplication>		<!-- Files replication in data servers -->
 		<dcreplication>3</dcreplication>		<!-- Files replication in data clients -->
