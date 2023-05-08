@@ -847,6 +847,7 @@ int init_database(int argc, char *argv[])
 	database->delay_bound = (int64_t)atoll(argv[13]);		// Workunit deadline
 	database->success_percentage = (char)atoi(argv[14]);		// Success results percentage
 	database->canonical_percentage = (char)atoi(argv[15]);		// Canonical results percentage
+	printf("Canon for %d = %d\n", database->project_number, database->canonical_percentage);
 	database->input_file_size = (int64_t)atoll(argv[16]);		// Input file size
 	database->disk_bw = (int64_t)atoll(argv[17]);			// Disk bandwidth
 	database->ndata_servers = (char)atoi(argv[18]);			// Number of data servers
@@ -2437,8 +2438,12 @@ static int client_ask_for_work(client_t client, project_t proj, double percentag
 		// Executed task status [SUCCES, FAIL]	
 		if(uniform_int(0,99) < database->success_percentage){
 			 ((reply_t)ssexecution_results->content)->status = SUCCESS;
+			 printf("SUCCESS for %d\n", proj->number);
 			// Executed task value [CORRECT, INCORRECT]
-			if(uniform_int(0,99) < database->canonical_percentage) ((reply_t)ssexecution_results->content)->value = CORRECT;
+			if(uniform_int(0,99) < database->canonical_percentage) {
+				printf("SUCCESS+CORRECT for %d, canon=%d\n", proj->number, database->canonical_percentage);
+				((reply_t)ssexecution_results->content)->value = CORRECT;
+			}
 			else ((reply_t)ssexecution_results->content)->value = INCORRECT;
 		}
 		else{
