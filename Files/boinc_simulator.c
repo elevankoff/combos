@@ -1108,6 +1108,7 @@ int validator(int argc, char *argv[])
 				workunit->status = VALID;
 				xbt_mutex_release(database->w_mutex);
 				database->nvalid_results += (int64_t)(workunit->nvalid_results);
+				printf("Valid += %ld for %d\n", (int64_t)(workunit->nvalid_results), project_number);
 				database->total_credit += (int64_t)(workunit->credits*workunit->nvalid_results);	
 			}
 			else if(workunit->ntotal_results 		>=	database->max_total_results		||
@@ -1121,6 +1122,7 @@ int validator(int argc, char *argv[])
 		}
 		else if(workunit->status == VALID && reply->status == SUCCESS && reply->value == CORRECT){
 			database->nvalid_results++;
+			printf("Valid += 1 for %d\n", project_number);
 			database->total_credit += (int64_t)(workunit->credits);
 		}
 	
