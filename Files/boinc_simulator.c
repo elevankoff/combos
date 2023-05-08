@@ -2655,7 +2655,7 @@ static int client_work_fetch(int argc, char *argv[])
 	static char first = 1;
 	project_t proj;	
 	double work_percentage = 0;
-	double control, sleep;
+	double control_max, control_min, sleep;
 
 	MSG_process_sleep(maxwt);	
 	MSG_process_sleep(uniform_ab(0,3600));
@@ -2705,11 +2705,18 @@ static int client_work_fetch(int argc, char *argv[])
 			//printf("Dept to project: %f, shortfall for project: %f\n", proj->long_debt, proj->shortfall);
 ///////******************************///////
 
-			if ((selected_proj == NULL) 
-				|| (control - (proj->long_debt + proj->shortfall) < PRECISION))
-			{
-				control = proj->long_debt + proj->shortfall;
+			if (selected_proj != NULL) {
+				if (control_max - (proj->long_debt + proj->shortfall) < PRECISION) {
+					control_max = proj->long_debt + proj->shortfall;
+					selected_proj = proj;
+				}
+				if (control_min - (proj->long_debt + proj->shortfall) > PRECISION) {
+					control_min = proj->long_debt + proj->shortfall;
+				}
+			} else {
 				selected_proj = proj;
+				control_max = proj->long_debt + proj->shortfall;
+				control_min = control_max;
 			}
 			struct proj_weight* weight = malloc(sizeof(struct proj_weight));
 			weight->proj = proj;
@@ -2720,13 +2727,19 @@ static int client_work_fetch(int argc, char *argv[])
 			unsigned int dynar_cursor;
 			struct proj_weight* cur_weight;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
+				proj = cur_weight->proj;
 				pdatabase_t database = &_pdatabase[(int)proj->number];
 				double success_percentage = database->success_percentage;
 				if (success_percentage == 0) {
 					success_percentage = 0.1;
 				}
-				cur_weight->weight = (proj->long_debt + proj->shortfall) / control * success_percentage;
-				printf("Cur weight for %u = %f\n", dynar_cursor, cur_weight->weight);
+				if (control_min < 0) {
+					cur_weight->weight = (proj->long_debt + proj->shortfall - control_min) / (control_max - control_min) * success_percentage;
+				} else {
+					cur_weight->weight = (proj->long_debt + proj->shortfall) / control_max * success_percentage;
+				}
+				printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
+					dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
 			}
 			xbt_dynar_sort(proj_weights, weights_cmpfunc);
 			struct proj_weight *greatest_weight = *(struct proj_weight**)xbt_dynar_get_ptr(proj_weights, 0);
