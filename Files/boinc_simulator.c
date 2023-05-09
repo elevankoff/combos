@@ -1109,7 +1109,7 @@ int validator(int argc, char *argv[])
 				workunit->status = VALID;
 				xbt_mutex_release(database->w_mutex);
 				database->nvalid_results += (int64_t)(workunit->nvalid_results);
-				printf("Valid += %ld for %d\n", (int64_t)(workunit->nvalid_results), project_number);
+				//printf("Valid += %ld for %d\n", (int64_t)(workunit->nvalid_results), project_number);
 				database->total_credit += (int64_t)(workunit->credits*workunit->nvalid_results);	
 			}
 			else if(workunit->ntotal_results 		>=	database->max_total_results		||
@@ -1123,7 +1123,7 @@ int validator(int argc, char *argv[])
 		}
 		else if(workunit->status == VALID && reply->status == SUCCESS && reply->value == CORRECT){
 			database->nvalid_results++;
-			printf("Valid += 1 for %d\n", project_number);
+			//printf("Valid += 1 for %d\n", project_number);
 			database->total_credit += (int64_t)(workunit->credits);
 		}
 	
@@ -2438,10 +2438,10 @@ static int client_ask_for_work(client_t client, project_t proj, double percentag
 		// Executed task status [SUCCES, FAIL]	
 		if(uniform_int(0,99) < database->success_percentage){
 			 ((reply_t)ssexecution_results->content)->status = SUCCESS;
-			 printf("SUCCESS for %d\n", proj->number);
+			 //printf("SUCCESS for %d\n", proj->number);
 			// Executed task value [CORRECT, INCORRECT]
 			if(uniform_int(0,99) < database->canonical_percentage) {
-				printf("SUCCESS+CORRECT for %d, canon=%d\n", proj->number, database->canonical_percentage);
+				//printf("SUCCESS+CORRECT for %d, canon=%d\n", proj->number, database->canonical_percentage);
 				((reply_t)ssexecution_results->content)->value = CORRECT;
 			}
 			else ((reply_t)ssexecution_results->content)->value = INCORRECT;
@@ -2656,7 +2656,7 @@ project_t wrr_by_weight(xbt_dynar_t proj_weights) {
 	double pref_sum = 0;
 	xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 		pref_sum += cur_weight->weight;
-		printf("Pref sum for %d = %f\n", dynar_cursor, pref_sum);
+		//printf("Pref sum for %d = %f\n", dynar_cursor, pref_sum);
 		if (pref_sum >= random) {
 			return cur_weight->proj;
 		}
@@ -2762,8 +2762,8 @@ static int client_work_fetch(int argc, char *argv[])
 					cur_weight->weight = (proj->long_debt + proj->shortfall) / control_max * success_percentage;
 				}
 				weight_sum += cur_weight->weight;
-				printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
-					dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
+				//printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
+				// 	dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
 			}
 			struct proj_weight* greatest_weight = NULL;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
@@ -2771,11 +2771,11 @@ static int client_work_fetch(int argc, char *argv[])
 				if (!greatest_weight || cur_weight->weight - greatest_weight->weight > PRECISION) {
 					greatest_weight = cur_weight;
 				}
-				printf("%f, ", cur_weight->weight);
+				//printf("%f, ", cur_weight->weight);
 			}
-			printf("\n");
+			//printf("\n");
 			double max_weight = greatest_weight->weight;
-			printf("Greatest weight = %f\n", max_weight);
+			//printf("Greatest weight = %f\n", max_weight);
 			//selected_proj = greatest_weight->proj;
 			selected_proj = wrr_by_weight(proj_weights);
 			
