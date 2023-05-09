@@ -2649,6 +2649,20 @@ int weights_cmpfunc (const void * a, const void * b) {
   return B->weight - A->weight;
 }
 
+project_t wrr_by_weight(xbt_dynar_t proj_weights) {
+	unsigned int dynar_cursor;
+	struct proj_weight* cur_weight;
+	double random = uniform();
+	double pref_sum = 0;
+	xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
+		pref_sum += cur_weight->weight;
+		if (pref_sum >= random) {
+			return cur_weight->proj;
+		}
+	}
+	return cur_weight->proj;
+}
+
 
 /*
 	Client work fetch
@@ -2763,7 +2777,8 @@ static int client_work_fetch(int argc, char *argv[])
 			}
 			printf("Greatest weight = %f\n", max_weight);
 			// TODO: fix to WRR
-			selected_proj = greatest_weight->proj;
+			//selected_proj = greatest_weight->proj;
+			selected_proj = wrr_by_weight(proj_weights);
 			
 
 			//printf("Selected project(%s) shortfall %lf %d\n", selected_proj->name, selected_proj->shortfall, selected_proj->shortfall > 0);
