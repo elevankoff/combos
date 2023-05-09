@@ -2733,6 +2733,7 @@ static int client_work_fetch(int argc, char *argv[])
 		if (selected_proj) {
 			unsigned int dynar_cursor;
 			struct proj_weight* cur_weight;
+			double weight_sum = 0;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 				proj = cur_weight->proj;
 				pdatabase_t database = &_pdatabase[(int)proj->number];
@@ -2745,9 +2746,15 @@ static int client_work_fetch(int argc, char *argv[])
 				} else {
 					cur_weight->weight = (proj->long_debt + proj->shortfall) / control_max * success_percentage;
 				}
+				weight_sum += cur_weight->weight;
 				printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
 					dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
 			}
+			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
+				cur_weight->weight /= weight_sum;
+				printf("%f, ", cur_weight->weight);
+			}
+			printf("\n");
 			xbt_dynar_sort(proj_weights, weights_cmpfunc);
 			struct proj_weight *greatest_weight = *(struct proj_weight**)xbt_dynar_get_ptr(proj_weights, 0);
 			double max_weight = greatest_weight->weight;
