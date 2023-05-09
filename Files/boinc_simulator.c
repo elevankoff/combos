@@ -2656,6 +2656,7 @@ project_t wrr_by_weight(xbt_dynar_t proj_weights) {
 	double pref_sum = 0;
 	xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 		pref_sum += cur_weight->weight;
+		printf("Pref sum for %d = %f\n", dynar_cursor, pref_sum);
 		if (pref_sum >= random) {
 			return cur_weight->proj;
 		}
@@ -2764,13 +2765,15 @@ static int client_work_fetch(int argc, char *argv[])
 				printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
 					dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
 			}
+			struct proj_weight* greatest_weight = NULL;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
 				cur_weight->weight /= weight_sum;
+				if (!greatest_weight || cur_weight->weight - greatest_weight->weight > PRECISION) {
+					greatest_weight = cur_weight;
+				}
 				printf("%f, ", cur_weight->weight);
 			}
 			printf("\n");
-			xbt_dynar_sort(proj_weights, weights_cmpfunc);
-			struct proj_weight *greatest_weight = *(struct proj_weight**)xbt_dynar_get_ptr(proj_weights, 0);
 			double max_weight = greatest_weight->weight;
 			printf("Greatest weight = %f\n", max_weight);
 			//selected_proj = greatest_weight->proj;
