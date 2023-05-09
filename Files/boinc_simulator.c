@@ -2772,11 +2772,7 @@ static int client_work_fetch(int argc, char *argv[])
 			xbt_dynar_sort(proj_weights, weights_cmpfunc);
 			struct proj_weight *greatest_weight = *(struct proj_weight**)xbt_dynar_get_ptr(proj_weights, 0);
 			double max_weight = greatest_weight->weight;
-			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
-				cur_weight->weight /= max_weight;
-			}
 			printf("Greatest weight = %f\n", max_weight);
-			// TODO: fix to WRR
 			//selected_proj = greatest_weight->proj;
 			selected_proj = wrr_by_weight(proj_weights);
 			
