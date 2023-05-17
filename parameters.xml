@@ -1,4 +1,4 @@
-<simulation_time>200</simulation_time>				<!-- Simulation time in hours  -->
+<simulation_time>100</simulation_time>				<!-- Simulation time in hours  -->
 <warm_up_time>20</warm_up_time>				<!-- Warm up time in hours -->
 
 <!-- Server side -->

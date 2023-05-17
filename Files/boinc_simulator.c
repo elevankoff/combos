@@ -2757,14 +2757,10 @@ static int client_work_fetch(int argc, char *argv[])
 				if (success_percentage == 0) {
 					success_percentage = 0.1;
 				}
-				if (control_min < 0) {
-					cur_weight->weight = (proj->long_debt + proj->shortfall - control_min*2) / (control_max - control_min*2) * success_percentage;
-				} else {
-					cur_weight->weight = (proj->long_debt + proj->shortfall) / control_max * success_percentage;
-				}
+				cur_weight->weight = success_percentage;
 				weight_sum += cur_weight->weight;
-				//printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
-				// 	dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
+				printf("Current weight for %u = %f, [suc_perc = %f], [control_min = %f], [control_max = %f], [sum = %f] \n",
+				 	dynar_cursor, cur_weight->weight, success_percentage, control_min, control_max, proj->long_debt + proj->shortfall);
 			}
 			struct proj_weight* greatest_weight = NULL;
 			xbt_dynar_foreach(proj_weights, dynar_cursor, cur_weight) {
