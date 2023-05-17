@@ -85,7 +85,7 @@
 		<ab_param>2.964</ab_param>			<!-- B -->
 		<nv_distri>2</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<na_param>2.444</na_param>			<!-- A -->
-		<nb_param>-0.586</nb_param>			<!-- B -->
+		<nb_param>0.586</nb_param>			<!-- B -->
 		<xv_distri>0</xv_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<xa_param>0.393</xa_param>			<!-- A -->
 		<xb_param>2.964</xb_param>			<!-- B -->
