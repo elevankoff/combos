@@ -742,6 +742,7 @@ int print_results(){
 
 	// Iterate servers information
 	for(i=0; i<NUMBER_PROJECTS; i++){
+		m = 0;
 		database = &_pdatabase[i];	// Server info pointer
 		
 		// Print results
@@ -776,6 +777,7 @@ int print_results(){
 		for(j=0; j<(int64_t)database->ndata_clients; j++, m++){
 			time_busy += (_dclient_info[m].time_busy);
 			storage += (int64_t)(_dclient_info[m]).total_storage;
+			printf("TOTAL ST: %lld", (int64_t)(_dclient_info[m]).total_storage);
 			tnavailable += _dclient_info[m].navailable;
 		}
 

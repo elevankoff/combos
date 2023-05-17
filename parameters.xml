@@ -8,8 +8,8 @@
 		<snumber>0</snumber>				<!-- Project number -->
 		<name>ATLAS@home</name>				<!-- Project name -->
 		<nscheduling_servers>1</nscheduling_servers>	<!-- Number of scheduling servers -->
-		<ndata_servers>1</ndata_servers>		<!-- Number of data servers of the project -->
-		<ndata_client_servers>1</ndata_client_servers>  <!-- Number of data client servers -->
+		<ndata_servers>10</ndata_servers>		<!-- Number of data servers of the project -->
+		<ndata_client_servers>10</ndata_client_servers>  <!-- Number of data client servers -->
 		<server_pw>12000000000</server_pw>		<!-- Server power in FLOPS -->
 		<disk_bw>167772160</disk_bw>			<!-- Disk speed in bytes/sec -->
 		<ifgl_percentage>100<ifgl_percentage>           <!-- Percentage of input files generated locally -->
@@ -62,8 +62,8 @@
 <client_side>
 	<n_groups>1</n_groups>					<!-- Number of groups -->
 	<group>
-		<n_clients>1000</n_clients>			<!-- Number of clients of the group -->
-		<ndata_clients>100</ndata_clients>		<!-- Number of data clients of the group -->
+		<n_clients>300</n_clients>			<!-- Number of clients of the group -->
+		<ndata_clients>150</ndata_clients>		<!-- Number of data clients of the group -->
 		<connection_interval>1</connection_interval>	<!-- Connection interval -->	
 		<scheduling_interval>3600</scheduling_interval>	<!-- Scheduling interval -->
 		<gbw>10Mbps</gbw>				<!-- Cluster link bandwidth in bps -->
@@ -91,7 +91,7 @@
 		<xb_param>2.964</xb_param>			<!-- B -->
 		<yv_distri>2</yv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<ya_param>2.844</ya_param>			<!-- A -->
-		<yb_param>-0.586</yb_param>			<!-- B -->
+		<yb_param>0.586</yb_param>			<!-- B -->
 		<att_projs>2</att_projs>			<!-- Number of projects attached -->
 		<gproject>
 			<pnumber>0</pnumber>			<!-- Project number -->
