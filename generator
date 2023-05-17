@@ -132,7 +132,7 @@ arg1[j++]=${n_groups}
 
 # BORRAR
 cd Traces/lhc/
-./command_unsort
+#./command_unsort Comment for using speed distribution from parameters
 cd ../..
 # FIN BORRAR
 

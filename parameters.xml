@@ -74,10 +74,10 @@
 		<pv_distri>5</pv_distri>			<!-- Speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<pa_param>0.1734</pa_param>			<!-- A -->
 		<pb_param>-1</pb_param>				<!-- B -->
-		<st_distri>5</st_distri>			<!-- Disk storage distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<st_distri>5</st_distri>			<!-- Disk storage distribution (unused) [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<sa_param>0.0001</sa_param>			<!-- A -->
 		<sb_param>-1</sb_param>				<!-- B -->
-		<db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<db_distri>5</db_distri>			<!-- Disk storage distribtion [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<da_param>0.0001</da_param>			<!-- A -->
 		<db_param>-1</db_param>				<!-- B -->
 		<av_distri>0</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
